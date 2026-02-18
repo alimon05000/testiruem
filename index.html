@@ -7,7 +7,251 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root {
+            /* Премиальная палитра */
+            --bg-deep: #0a0e1a;
+            --bg-overlay: rgba(10, 14, 26, 0.85);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            
+            --gold-start: #bf953f;
+            --gold-end: #fcf6ba;
+            --gold-accent: #d4af37;
+            
+            --blue-accent: #4a90e2;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a6b8;
+            
+            --nav-height: 70px;
+        }
+
+        /* Шрифты */
+        .cinzel-font { font-family: 'Cinzel', serif; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            margin: 0;
+            padding-bottom: calc(var(--nav-height) + 20px);
+            overflow-x: hidden;
+        }
+
+        /* Фон с эффектом */
+        .app-background {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Картинка кинозала */
+            background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(8px) brightness(0.4);
+            z-index: -1;
+        }
+        /* Эффект зерна */
+        .app-background::after {
+            content: "";
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Утилиты */
+        .app-container { padding: 20px; max-width: 500px; margin: 0 auto; }
+        .text-center { text-align: center; }
+        .mt-3 { margin-top: 16px; }
+        .accent-text { color: var(--gold-accent); }
+        .hint-text { color: var(--text-secondary); font-size: 12px; }
+        .gradient-text {
+            background: linear-gradient(to right, var(--gold-start), var(--gold-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        /* Анимации */
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .floating-icon { animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* Стекломорфизм */
+        .glass-panel, .glass-card, .reward-glass, .task-glass, .stat-glass, .my-rank-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Свечение */
+        .glow-gold { box-shadow: 0 4px 24px -1px rgba(212, 175, 55, 0.15); border-color: rgba(212, 175, 55, 0.3); }
+        .glow-blue { box-shadow: 0 4px 24px -1px rgba(74, 144, 226, 0.15); border-color: rgba(74, 144, 226, 0.3); }
+
+        /* Вкладки */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* === ГЛАВНАЯ === */
+        .main-header { margin-bottom: 24px; }
+        .user-block { display: flex; align-items: center; padding: 12px; gap: 12px; width: fit-content; }
+        .avatar-small { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--gold-accent); object-fit: cover; }
+        .user-text h2 { font-size: 16px; margin: 0; }
+        .season-status { font-size: 12px; }
+
+        .league-main-card { padding: 30px 20px; text-align: center; position: relative; overflow: hidden; }
+        .league-icon-wrapper { font-size: 64px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+        .league-title { font-size: 32px; margin: 0 0 10px 0; letter-spacing: 1px; }
+        .number-large { font-size: 48px; line-height: 1; }
+        .points-label { font-size: 18px; color: var(--text-secondary); }
+
+        .progress-wrapper { margin-top: 24px; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+        .premium-progress-bar {
+            height: 14px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 7px;
+            padding: 2px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .progress-fill-gold {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-start), var(--gold-accent));
+            border-radius: 5px;
+            position: relative;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .progress-glow {
+            position: absolute; top: 0; right: 0; bottom: 0; width: 30px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+            filter: blur(3px);
+            animation: progressShine 2s infinite linear;
+        }
+        @keyframes progressShine { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        .premium-btn {
+            padding: 16px; border: none; border-radius: 14px; font-family: 'Montserrat', sans-serif;
+            font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: all 0.2s;
+        }
+        .btn-gold { background: linear-gradient(135deg, var(--gold-start), var(--gold-accent)); color: #0a0e1a; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
+        .btn-glass { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); }
+        .premium-btn:active { transform: scale(0.98); }
+
+        /* === РЕЙТИНГ === */
+        .my-rank-glass {
+            display: flex; align-items: center; padding: 16px; margin-bottom: 20px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), transparent);
+        }
+        .rank-number { font-size: 28px; font-weight: bold; color: var(--blue-accent); margin-right: 20px; }
+        .rank-details h3 { margin: 0 0 4px 0; font-size: 16px; }
+
+        .leaderboard-item {
+            display: flex; align-items: center; padding: 14px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .lb-rank { width: 35px; font-weight: bold; text-align: center; }
+        .top-1 { color: var(--gold-accent); font-size: 1.2em; text-shadow: 0 0 10px var(--gold-accent); }
+        .lb-avatar { margin-right: 14px; border: 1px solid var(--glass-border); width: 40px; height: 40px; border-radius: 50%; object-fit: cover;}
+        .lb-name { font-weight: 600; }
+        .lb-league { font-size: 12px; color: var(--text-secondary); }
+        .lb-points { font-weight: bold; color: var(--gold-accent); margin-left: auto;}
+
+        /* === НАГРАДЫ === */
+        .rewards-track { display: flex; flex-direction: column; gap: 16px; }
+        .reward-glass { padding: 16px; position: relative; overflow: hidden; }
+        .active-league { border: 2px solid var(--gold-accent); background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent); }
+        .reward-status { position: absolute; top: 12px; right: 12px; font-size: 10px; background: var(--gold-accent); color: #000; padding: 3px 8px; border-radius: 10px; font-weight: bold; }
+        .reward-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+        .league-emoji { font-size: 32px; }
+        .grayscale { filter: grayscale(1); opacity: 0.6; }
+        .reward-header h3 { margin: 0 0 4px 0; font-size: 18px; }
+        .league-threshold { color: var(--text-secondary); font-size: 13px; }
+        .lock-icon { margin-left: auto; color: var(--text-secondary); opacity: 0.5; }
+
+        .reward-perks { list-style: none; padding: 0; margin: 0; }
+        .reward-perks li { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+        .gold-icon { color: var(--gold-accent); }
+
+        /* === ПРОФИЛЬ === */
+        .profile-header { margin-bottom: 24px; }
+        .profile-avatar-container {
+            width: 110px; height: 110px; margin: 0 auto 16px; padding: 5px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+        /* Рамки */
+        .frame-silver { background: linear-gradient(45deg, #7f8c8d, #bdc3c7); box-shadow: 0 0 20px rgba(189, 195, 199, 0.3); }
+        .frame-gold { background: linear-gradient(45deg, var(--gold-start), var(--gold-accent), var(--gold-end)); box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); animation: rotateFrame 10s linear infinite; }
+        @keyframes rotateFrame { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
+
+        .avatar-profile { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--bg-deep); object-fit: cover; }
+        .profile-header h2 { margin: 0 0 4px 0; font-size: 22px; }
+        .username-tag { color: var(--text-secondary); margin-bottom: 12px; }
+        .league-tag { display: inline-block; padding: 6px 16px; font-size: 13px; font-weight: 600; color: var(--gold-accent); }
+
+        .stats-glass-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        .stat-glass { padding: 16px 10px; text-align: center; display: flex; flex-direction: column; }
+        .stat-num { font-size: 20px; font-weight: bold; }
+        .stat-desc { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+
+        .referral-glass { padding: 20px; }
+        .referral-glass h3 { margin: 0 0 8px 0; font-size: 16px; display: flex; align-items: center; gap: 10px; color: var(--blue-accent); }
+        .ref-input-wrapper { display: flex; gap: 10px; margin-top: 16px; }
+        #ref-link-input {
+            flex-grow: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+            color: var(--gold-accent); padding: 12px; border-radius: 10px; font-family: monospace; outline: none;
+        }
+        .copy-premium-btn {
+            background: var(--blue-accent); color: #fff; border: none; width: 44px; border-radius: 10px; cursor: pointer; font-size: 18px;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3); transition: transform 0.2s;
+        }
+        .copy-premium-btn:active { transform: scale(0.90); }
+
+        /* === ЗАДАНИЯ === */
+        .back-glass-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); padding: 8px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; backdrop-filter: blur(10px); }
+        .tasks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .task-glass { display: flex; align-items: center; padding: 16px; gap: 16px; }
+        .task-icon-bg { width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .gold-bg { background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), transparent); }
+        .blue-bg { background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), transparent); }
+        .task-details h4 { margin: 0 0 4px 0; font-size: 15px; }
+        .task-points { margin-left: auto; font-weight: bold; font-size: 16px; color: var(--text-secondary); }
+        .gold-points { color: var(--gold-accent); text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        .blue-points { color: var(--blue-accent); }
+        .premium-task-glow { box-shadow: 0 4px 20px -5px rgba(212, 175, 55, 0.2); border-color: rgba(212, 175, 55, 0.3); }
+
+        /* === ПАРЯЩАЯ НАВИГАЦИЯ === */
+        .floating-nav {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 450px; height: var(--nav-height);
+            display: flex; justify-content: space-around; align-items: center;
+            border-radius: 35px; z-index: 100;
+            background: rgba(20, 25, 40, 0.8);
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.5);
+        }
+        .nav-link {
+            display: flex; flex-direction: column; align-items: center; text-decoration: none;
+            color: var(--text-secondary); font-size: 10px; transition: all 0.3s; position: relative;
+            width: 60px;
+        }
+        .nav-link i { font-size: 20px; margin-bottom: 4px; transition: all 0.3s; }
+        .nav-link.active { color: var(--gold-accent); }
+        .nav-link.active i { transform: translateY(-4px); text-shadow: 0 0 15px var(--gold-accent); }
+        .nav-link.active::after {
+            content: ''; position: absolute; bottom: -10px; width: 6px; height: 6px;
+            background: var(--gold-accent); border-radius: 50%; box-shadow: 0 0 10px var(--gold-accent);
+        }
+        /* Центральная кнопка */
+        .centered-link { transform: translateY(-20px); }
+        .center-icon-bg {
+            width: 60px; height: 60px; background: linear-gradient(135deg, var(--gold-start), var(--gold-accent));
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4); border: 4px solid var(--bg-deep);
+        }
+        .centered-link i { color: #0a0e1a; font-size: 24px; margin: 0; }
+    </style>
 </head>
 <body>
     <div class="app-background"></div>
@@ -72,7 +316,7 @@
             </div>
 
             <div class="leaderboard-list glass-panel" id="leaderboard-container">
-                </div>
+            </div>
              <p class="hint-text text-center mt-3">Для участия в ТОП нужна минимум 1 покупка Premium.</p>
         </section>
 
@@ -97,7 +341,6 @@
                         <li><i class="fa-solid fa-check gold-icon"></i> Серебряная рамка</li>
                     </ul>
                 </div>
-                
                 <div class="reward-glass next-league locked">
                     <div class="reward-header">
                         <span class="league-emoji grayscale">✍️</span>
@@ -227,6 +470,187 @@
         </a>
     </nav>
 
-    <script src="script.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.setHeaderColor('#0a0e1a'); 
+        tg.setBackgroundColor('#0a0e1a');
+
+        // MOCK DATA
+        const MOCK_USER_DATA = {
+            tg_id: tg.initDataUnsafe?.user?.id || 123456,
+            first_name: tg.initDataUnsafe?.user?.first_name || "Киноман",
+            last_name: tg.initDataUnsafe?.user?.last_name || "",
+            username: tg.initDataUnsafe?.user?.username || "kinoman_user",
+            photo_url: tg.initDataUnsafe?.user?.photo_url || "https://i.pravatar.cc/150?img=68",
+            season_points: 145,
+            league_id: 2, 
+            stats: { invites: 12, premium_bought: 2 },
+            rank: 42,
+            points_to_next_rank: 12,
+            bot_username: "kinoitochca_bot" 
+        };
+
+        const LEAGUES = [
+            { id: 0, name: "Зритель", threshold: 0, icon: "👀", next_threshold: 10, frame: null },
+            { id: 1, name: "Киноман", threshold: 10, icon: "🎬", next_threshold: 25, frame: "frame-silver" },
+            { id: 2, name: "Критик", threshold: 25, icon: "✍️", next_threshold: 50, frame: "frame-gold" },
+            { id: 3, name: "Продюсер", threshold: 50, icon: "💰", next_threshold: 90, frame: "frame-gold" },
+            { id: 4, name: "Режиссёр", threshold: 90, icon: "🎥", next_threshold: 150, frame: "frame-gold" },
+            { id: 5, name: "Легенда", threshold: 150, icon: "👑", next_threshold: null, frame: "frame-gold" }
+        ];
+
+        const MOCK_LEADERBOARD = [
+            { rank: 1, name: "KinoKing", points: 320, league: "Легенда", avatar: "https://i.pravatar.cc/50?img=11" },
+            { rank: 2, name: "Eva Green", points: 295, league: "Легенда", avatar: "https://i.pravatar.cc/50?img=5" },
+            { rank: 3, name: "Producer Max", points: 250, league: "Режиссёр", avatar: "https://i.pravatar.cc/50?img=3" },
+            { rank: 41, name: "Сэм", points: 157, league: "Легенда", avatar: "https://i.pravatar.cc/50?img=8" },
+            { rank: 43, name: "Анна", points: 140, league: "Киноман", avatar: "https://i.pravatar.cc/50?img=9" }
+        ];
+
+        function initApp() {
+            populateUserData();
+            setupNavigation();
+            loadLeaderboard();
+            setupReferralCopy();
+            document.querySelector('.app-container').style.opacity = 1;
+        }
+
+        function populateUserData() {
+            const user = MOCK_USER_DATA;
+            const currentLeague = LEAGUES.find(l => l.id === user.league_id);
+            const nextLeague = LEAGUES.find(l => l.id === user.league_id + 1);
+            const fullName = `${user.first_name} ${user.last_name}`.trim();
+
+            document.getElementById('header-username').textContent = fullName;
+            document.getElementById('profile-fullname').textContent = fullName;
+            document.getElementById('profile-username').textContent = user.username ? `@${user.username}` : "";
+
+            const avatarEls = [document.getElementById('header-avatar'), document.getElementById('profile-avatar')];
+            avatarEls.forEach(el => el.src = user.photo_url);
+
+            document.getElementById('current-league-icon').textContent = currentLeague.icon;
+            document.getElementById('current-league-name').textContent = currentLeague.name;
+            document.getElementById('current-points').textContent = user.season_points;
+
+            if (nextLeague) {
+                const pointsNeeded = nextLeague.threshold - user.season_points;
+                document.getElementById('next-league-target').textContent = `Цель: ${nextLeague.name} (еще ${pointsNeeded})`;
+                
+                const leagueRange = nextLeague.threshold - currentLeague.threshold;
+                const userProgressInOutRange = user.season_points - currentLeague.threshold;
+                const progressPercent = (userProgressInOutRange / leagueRange) * 100;
+                document.getElementById('main-progress-fill').style.width = `${Math.max(8, progressPercent)}%`;
+            } else {
+                document.getElementById('next-league-target').textContent = "Абсолютный чемпион!";
+                document.getElementById('main-progress-fill').style.width = '100%';
+            }
+
+            const frameContainer = document.getElementById('profile-frame-container');
+            frameContainer.classList.remove('frame-silver', 'frame-gold');
+            if (currentLeague.frame) {
+                frameContainer.classList.add(currentLeague.frame);
+            }
+            document.getElementById('profile-league-badge').textContent = `${currentLeague.icon} ${currentLeague.name}`;
+
+            document.getElementById('stat-points').textContent = user.season_points;
+            document.getElementById('stat-invites').textContent = user.stats.invites;
+            document.getElementById('stat-premium').textContent = user.stats.premium_bought;
+
+            const refLink = `https://t.me/${user.bot_username}?start=ref_${user.tg_id}`;
+            document.getElementById('ref-link-input').value = refLink;
+
+            document.getElementById('my-rank').textContent = user.rank;
+            document.getElementById('points-gap').textContent = `${user.points_to_next_rank} б.`;
+        }
+
+        function setupNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetId = link.getAttribute('data-target');
+                    if(targetId) {
+                         e.preventDefault();
+                         openTab(targetId);
+                    }
+                });
+            });
+        }
+
+        window.openTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active', 'fade-in');
+            });
+            document.querySelectorAll('.nav-link').forEach(nav => {
+                nav.classList.remove('active');
+            });
+
+            const targetTab = document.getElementById(tabId);
+            targetTab.classList.add('active');
+            setTimeout(() => targetTab.classList.add('fade-in'), 10);
+
+            const activeNavLink = document.querySelector(`.nav-link[data-target="${tabId}"]`);
+            if (activeNavLink) {
+                activeNavLink.classList.add('active');
+            }
+            tg.HapticFeedback.impactOccurred('light');
+        };
+
+        function loadLeaderboard() {
+            const container = document.getElementById('leaderboard-container');
+            container.innerHTML = ''; 
+            let combinedList = [...MOCK_LEADERBOARD];
+
+            combinedList.forEach(user => {
+                let rankDisplay = `#${user.rank}`;
+                let rankClass = '';
+                if (user.rank === 1) { rankDisplay = '🥇'; rankClass = 'top-1'; }
+                else if (user.rank === 2) rankDisplay = '🥈';
+                else if (user.rank === 3) rankDisplay = '🥉';
+                
+                const itemHtml = `
+                    <div class="leaderboard-item">
+                        <div class="lb-rank ${rankClass}">${rankDisplay}</div>
+                        <img src="${user.avatar}" alt="${user.name}" class="lb-avatar">
+                        <div class="lb-info">
+                            <div class="lb-name">${user.name}</div>
+                            <div class="lb-league">${user.league}</div>
+                        </div>
+                        <div class="lb-points">${user.points}</div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', itemHtml);
+            });
+        }
+
+        function setupReferralCopy() {
+            const copyBtn = document.getElementById('copy-ref-btn');
+            const linkInput = document.getElementById('ref-link-input');
+
+            copyBtn.addEventListener('click', () => {
+                linkInput.select();
+                linkInput.setSelectionRange(0, 99999); 
+
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                         navigator.clipboard.writeText(linkInput.value).then(onCopySuccess);
+                    } else {
+                        document.execCommand('copy');
+                        onCopySuccess();
+                    }
+                } catch (err) {
+                    tg.showPopup({ title: 'Ошибка', message: 'Не удалось скопировать вручную.' });
+                }
+            });
+        }
+
+        function onCopySuccess() {
+            tg.showPopup({ title: 'Готово!', message: 'Ссылка скопирована.' });
+            tg.HapticFeedback.notificationOccurred('success');
+        }
+
+        tg.ready();
+        initApp();
+    </script>
 </body>
 </html>
