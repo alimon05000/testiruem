@@ -1,269 +1,242 @@
-/* Основные переменные и сброс стилей */
 :root {
-    /* Цвета из темы Telegram (будут меняться автоматически) */
-    --tg-theme-bg-color: #17212b;
-    --tg-theme-text-color: #ffffff;
-    --tg-theme-hint-color: #7d8b99;
-    --tg-theme-link-color: #6ab3f3;
-    --tg-theme-button-color: #5288c1;
-    --tg-theme-button-text-color: #ffffff;
-    --tg-theme-secondary-bg-color: #232e3c;
-
-    /* Кастомные цвета для Кино-Карьеры */
-    --accent-gold: #ffd700;
-    --accent-silver: #c0c0c0;
-    --accent-bronze: #cd7f32;
-    --accent-blue: #4a90e2;
-    --accent-purple: #9b59b6;
-    --card-bg: var(--tg-theme-secondary-bg-color);
-    --bg-color: var(--tg-theme-bg-color);
-    --text-primary: var(--tg-theme-text-color);
-    --text-secondary: var(--tg-theme-hint-color);
-
-    /* Размеры */
-    --nav-height: 60px;
+    /* Премиальная палитра */
+    --bg-deep: #0a0e1a;
+    --bg-overlay: rgba(10, 14, 26, 0.85);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    
+    --gold-start: #bf953f;
+    --gold-end: #fcf6ba;
+    --gold-accent: #d4af37;
+    
+    --blue-accent: #4a90e2;
+    --text-primary: #f0f0f0;
+    --text-secondary: #a0a6b8;
+    
+    --nav-height: 70px;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
+/* Шрифты */
+.cinzel-font { font-family: 'Cinzel', serif; }
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--bg-color);
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg-deep);
     color: var(--text-primary);
-    font-size: 14px;
-    padding-bottom: var(--nav-height); /* Место для нижней навигации */
+    margin: 0;
+    padding-bottom: calc(var(--nav-height) + 20px);
     overflow-x: hidden;
 }
 
+/* Фон с эффектом */
+.app-background {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    /* Замените URL на свою красивую темную картинку (кинозал, боке) */
+    background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
+    background-size: cover;
+    filter: blur(8px) brightness(0.4);
+    z-index: -1;
+}
+/* Эффект зерна поверх фона */
+.app-background::after {
+    content: "";
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
 /* Утилиты */
-.app-container {
-    padding: 16px;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.centered { text-align: center; }
-.mt-2 { margin-top: 8px; }
+.app-container { padding: 20px; max-width: 500px; margin: 0 auto; }
 .text-center { text-align: center; }
-.highlight { color: var(--accent-gold); font-weight: bold; }
-
-/* Карточки */
-.card {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.mt-3 { margin-top: 16px; }
+.accent-text { color: var(--gold-accent); }
+.hint-text { color: var(--text-secondary); font-size: 12px; }
+.gradient-text {
+    background: linear-gradient(to right, var(--gold-start), var(--gold-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
 }
 
-/* Заголовки */
-.section-header {
-    margin-bottom: 16px;
-}
-.section-header h2 { font-size: 20px; margin-bottom: 4px; }
-.section-header p { color: var(--text-secondary); }
-.main-header {
-    margin-bottom: 20px;
-}
-
-/* Аватары */
-.avatar-small { width: 40px; height: 40px; border-radius: 50%; margin-right: 12px; }
-.avatar-large { width: 80px; height: 80px; border-radius: 50%; }
-.user-info-header { display: flex; align-items: center; }
-.season-badge { 
-    font-size: 12px; 
-    background: rgba(255, 215, 0, 0.15); 
-    color: var(--accent-gold); 
-    padding: 2px 8px; 
-    border-radius: 10px;
-}
-
-/* Вкладки (Tabs) */
-.tab-content {
-    display: none; /* Скрываем все вкладки по умолчанию */
-    animation: fadeIn 0.3s ease;
-}
-.tab-content.active {
-    display: block; /* Показываем только активную */
-}
+/* Анимации */
+.fade-in { animation: fadeIn 0.4s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.floating-icon { animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* --- СТЕКЛОМОРФИЗМ (Базовый класс) --- */
+.glass-panel, .glass-card, .reward-glass, .task-glass, .stat-glass, .my-rank-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Свечение */
+.glow-gold { box-shadow: 0 4px 24px -1px rgba(212, 175, 55, 0.15); border-color: rgba(212, 175, 55, 0.3); }
+.glow-blue { box-shadow: 0 4px 24px -1px rgba(74, 144, 226, 0.15); border-color: rgba(74, 144, 226, 0.3); }
+
+/* Вкладки */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
 /* === ГЛАВНАЯ === */
-.league-card {
-    background: linear-gradient(135deg, var(--card-bg) 0%, #2c3e50 100%);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-.league-icon-large { font-size: 48px; margin-bottom: 8px; }
-.league-title { font-size: 24px; margin-bottom: 4px; }
-.points-display { font-size: 18px; color: var(--text-secondary); margin-bottom: 16px; }
-.points-display span { font-size: 28px; font-weight: bold; color: var(--accent-gold); }
+.main-header { margin-bottom: 24px; }
+.user-block { display: flex; align-items: center; padding: 12px; gap: 12px; width: fit-content; }
+.avatar-small { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--gold-accent); }
+.user-text h2 { font-size: 16px; margin: 0; }
+.season-status { font-size: 12px; }
 
-/* Прогресс бар */
-.progress-container { margin-top: 12px; }
-.progress-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
-.progress-bar {
-    height: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    overflow: hidden;
+.league-main-card { padding: 30px 20px; text-align: center; position: relative; overflow: hidden; }
+.league-icon-wrapper { font-size: 64px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+.league-title { font-size: 32px; margin: 0 0 10px 0; letter-spacing: 1px; }
+.number-large { font-size: 48px; line-height: 1; }
+.points-label { font-size: 18px; color: var(--text-secondary); }
+
+.progress-wrapper { margin-top: 24px; }
+.progress-info { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+.premium-progress-bar {
+    height: 14px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 7px;
+    padding: 2px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
 }
-.progress-fill {
+.progress-fill-gold {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent-gold), var(--accent-bronze));
+    background: linear-gradient(90deg, var(--gold-start), var(--gold-accent));
     border-radius: 5px;
-    transition: width 0.5s ease;
+    position: relative;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.progress-glow {
+    position: absolute; top: 0; right: 0; bottom: 0; width: 30px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+    filter: blur(3px);
+    animation: progressShine 2s infinite linear;
+}
+@keyframes progressShine { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
 
-/* Кнопки действий */
-.actions-list { display: flex; flex-direction: column; gap: 10px; }
-.action-btn {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: transform 0.1s;
+.actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.premium-btn {
+    padding: 16px; border: none; border-radius: 14px; font-family: 'Montserrat', sans-serif;
+    font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: all 0.2s;
 }
-.action-btn:active { transform: scale(0.98); }
-.primary-btn { background-color: var(--tg-theme-button-color); color: var(--tg-theme-button-text-color); }
-.secondary-btn { background-color: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+.btn-gold { background: linear-gradient(135deg, var(--gold-start), var(--gold-accent)); color: #0a0e1a; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
+.btn-glass { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); }
+.premium-btn:active { transform: scale(0.98); }
 
 /* === РЕЙТИНГ === */
-.my-rank-card {
-    display: flex;
-    align-items: center;
-    background: rgba(82, 136, 193, 0.15); /* Подсветка текущего юзера */
-    border: 1px solid var(--tg-theme-button-color);
+.my-rank-glass {
+    display: flex; align-items: center; padding: 16px; margin-bottom: 20px;
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), transparent);
 }
-.rank-position {
-    font-size: 24px;
-    font-weight: bold;
-    margin-right: 16px;
-    color: var(--tg-theme-button-color);
-}
+.rank-number { font-size: 28px; font-weight: bold; color: var(--blue-accent); margin-right: 20px; }
+.rank-details h3 { margin: 0 0 4px 0; font-size: 16px; }
+
 .leaderboard-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex; align-items: center; padding: 14px;
+    border-bottom: 1px solid var(--glass-border);
 }
-.leaderboard-item:last-child { border-bottom: none; }
-.lb-rank { width: 30px; font-weight: bold; text-align: center; }
-.lb-avatar { margin-right: 12px; }
-.lb-info { flex-grow: 1; }
+.lb-rank { width: 35px; font-weight: bold; text-align: center; }
+.top-1 { color: var(--gold-accent); font-size: 1.2em; text-shadow: 0 0 10px var(--gold-accent); }
+.lb-avatar { margin-right: 14px; border: 1px solid var(--glass-border); }
 .lb-name { font-weight: 600; }
-.lb-league { font-size: 11px; color: var(--text-secondary); }
-.lb-points { font-weight: bold; color: var(--accent-gold); }
-.top-3 { color: var(--accent-gold); }
+.lb-league { font-size: 12px; color: var(--text-secondary); }
+.lb-points { font-weight: bold; color: var(--gold-accent); }
 
 /* === НАГРАДЫ === */
-.reward-card { display: flex; align-items: flex-start; gap: 12px; position: relative; }
-.reward-icon { font-size: 24px; min-width: 32px; text-align: center; }
-.reward-info h3 { margin-bottom: 6px; font-size: 16px; }
-.points-req { font-size: 12px; color: var(--text-secondary); font-weight: normal; margin-left: 8px; }
-.reward-info ul { list-style: none; }
-.reward-info li { font-size: 12px; margin-bottom: 4px; color: var(--text-secondary); }
-.locked { opacity: 0.6; filter: grayscale(0.8); }
-.locked h3::before { content: '🔒 '; }
-.current { border: 2px solid var(--accent-gold); background: rgba(255, 215, 0, 0.05); }
-.next-league { border: 1px dashed var(--accent-silver); }
-.status-badge {
-    position: absolute; top: 10px; right: 10px; font-size: 10px;
-    background: var(--accent-gold); color: #000; padding: 2px 6px; border-radius: 4px;
-}
-/* Цвета иконок лиг */
-.bronze { color: var(--accent-bronze); }
-.silver { color: var(--accent-silver); }
-.gold { color: var(--accent-gold); }
-.platinum { color: #e5e4e2; text-shadow: 0 0 10px rgba(229, 228, 226, 0.5); }
-.diamond { color: var(--accent-blue); text-shadow: 0 0 10px rgba(74, 144, 226, 0.5); }
-.legendary .reward-icon { animation: pulse 2s infinite; }
+.rewards-track { display: flex; flex-direction: column; gap: 16px; }
+.reward-glass { padding: 16px; position: relative; overflow: hidden; }
+.active-league { border: 2px solid var(--gold-accent); background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent); }
+.reward-status { position: absolute; top: 12px; right: 12px; font-size: 10px; background: var(--gold-accent); color: #000; padding: 3px 8px; border-radius: 10px; font-weight: bold; }
+.reward-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.league-emoji { font-size: 32px; }
+.grayscale { filter: grayscale(1); opacity: 0.6; }
+.reward-header h3 { margin: 0 0 4px 0; font-size: 18px; }
+.league-threshold { color: var(--text-secondary); font-size: 13px; }
+.lock-icon { margin-left: auto; color: var(--text-secondary); opacity: 0.5; }
+
+.reward-perks { list-style: none; padding: 0; margin: 0; }
+.reward-perks li { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+.gold-icon { color: var(--gold-accent); }
 
 /* === ПРОФИЛЬ === */
-.profile-avatar-frame {
-    display: inline-block;
-    padding: 4px;
-    border-radius: 50%;
-    margin-bottom: 12px;
+.profile-header { margin-bottom: 24px; }
+.profile-avatar-container {
+    width: 110px; height: 110px; margin: 0 auto 16px; padding: 5px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
 }
-/* Рамки для профиля */
-.frame-silver { background: linear-gradient(45deg, #999 0%, #eee 50%, #999 100%); }
-.frame-gold { background: linear-gradient(45deg, #bf953f 0%, #fcf6ba 50%, #bf953f 100%); box-shadow: 0 0 15px rgba(191, 149, 63, 0.5); }
+/* Рамки */
+.frame-silver { background: linear-gradient(45deg, #7f8c8d, #bdc3c7); box-shadow: 0 0 20px rgba(189, 195, 199, 0.3); }
+.frame-gold { background: linear-gradient(45deg, var(--gold-start), var(--gold-accent), var(--gold-end)); box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); animation: rotateFrame 10s linear infinite; }
+@keyframes rotateFrame { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
 
-.profile-main-card h2 { margin-bottom: 0; }
-.username { color: var(--text-secondary); margin-bottom: 8px; }
-.league-badge { background: var(--tg-theme-button-color); color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 12px; }
+.avatar-profile { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--bg-deep); object-fit: cover; }
+.profile-header h2 { margin: 0 0 4px 0; font-size: 22px; }
+.username-tag { color: var(--text-secondary); margin-bottom: 12px; }
+.league-tag { display: inline-block; padding: 6px 16px; font-size: 13px; font-weight: 600; color: var(--gold-accent); }
 
-.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
-.stat-card { background: var(--card-bg); padding: 12px; border-radius: 12px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-.stat-icon { font-size: 20px; margin-bottom: 4px; }
-.stat-value { font-size: 18px; font-weight: bold; }
-.stat-label { font-size: 11px; color: var(--text-secondary); }
-.stat-icon.gold { color: var(--accent-gold); }
-.stat-icon.blue { color: var(--accent-blue); }
-.stat-icon.purple { color: var(--accent-purple); }
+.stats-glass-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-glass { padding: 16px 10px; text-align: center; display: flex; flex-direction: column; }
+.stat-num { font-size: 20px; font-weight: bold; }
+.stat-desc { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
 
-.referral-link-container { display: flex; gap: 8px; margin-top: 12px; }
+.referral-glass { padding: 20px; }
+.referral-glass h3 { margin: 0 0 8px 0; font-size: 16px; display: flex; align-items: center; gap: 10px; color: var(--blue-accent); }
+.ref-input-wrapper { display: flex; gap: 10px; margin-top: 16px; }
 #ref-link-input {
-    flex-grow: 1;
-    background: rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--text-primary);
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-family: monospace;
+    flex-grow: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+    color: var(--gold-accent); padding: 12px; border-radius: 10px; font-family: monospace; outline: none;
 }
-.copy-btn {
-    background: var(--tg-theme-button-color); color: #fff; border: none;
-    padding: 0 16px; border-radius: 8px; cursor: pointer;
+.copy-premium-btn {
+    background: var(--blue-accent); color: #fff; border: none; width: 44px; border-radius: 10px; cursor: pointer; font-size: 18px;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3); transition: transform 0.2s;
 }
+.copy-premium-btn:active { transform: scale(0.90); }
 
-/* === ЗАДАНИЯ (Tasks) === */
-.back-btn { background: none; border: none; color: var(--text-primary); font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 16px;}
-.task-card { display: flex; align-items: center; gap: 12px; }
-.task-icon { font-size: 24px; width: 30px; text-align: center; }
-.task-info h4 { margin-bottom: 2px; }
-.task-info p { font-size: 12px; color: var(--text-secondary); }
-.task-reward { font-weight: bold; color: var(--accent-gold); margin-left: auto; background: rgba(255, 215, 0, 0.1); padding: 4px 8px; border-radius: 6px;}
-.highlight-task { border-left: 3px solid var(--accent-blue); }
-.premium-task { border-left: 3px solid var(--accent-gold); background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, var(--card-bg) 100%); }
+/* === ЗАДАНИЯ === */
+.back-glass-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); padding: 8px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; backdrop-filter: blur(10px); }
+.tasks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.task-glass { display: flex; align-items: center; padding: 16px; gap: 16px; }
+.task-icon-bg { width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.gold-bg { background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), transparent); }
+.blue-bg { background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), transparent); }
+.task-details h4 { margin: 0 0 4px 0; font-size: 15px; }
+.task-points { margin-left: auto; font-weight: bold; font-size: 16px; color: var(--text-secondary); }
+.gold-points { color: var(--gold-accent); text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+.blue-points { color: var(--blue-accent); }
+.premium-task-glow { box-shadow: 0 4px 20px -5px rgba(212, 175, 55, 0.2); border-color: rgba(212, 175, 55, 0.3); }
 
-/* === НИЖНЯЯ НАВИГАЦИЯ === */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: var(--nav-height);
-    background-color: var(--tg-theme-secondary-bg-color);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    z-index: 100;
+/* === ПАРЯЩАЯ НАВИГАЦИЯ === */
+.floating-nav {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    width: 90%; max-width: 450px; height: var(--nav-height);
+    display: flex; justify-content: space-around; align-items: center;
+    border-radius: 35px; z-index: 100;
+    background: rgba(20, 25, 40, 0.8); /* Чуть темнее стекла */
+    box-shadow: 0 10px 30px -5px rgba(0,0,0,0.5);
 }
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: var(--tg-theme-hint-color);
-    font-size: 11px;
-    transition: color 0.2s;
+.nav-link {
+    display: flex; flex-direction: column; align-items: center; text-decoration: none;
+    color: var(--text-secondary); font-size: 10px; transition: all 0.3s; position: relative;
+    width: 60px;
 }
-.nav-item i { font-size: 20px; margin-bottom: 4px; }
-.nav-item.active { color: var(--tg-theme-button-color); }
-
-/* Анимация пульсации для легенды */
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); filter: brightness(1.2); } 100% { transform: scale(1); } }
+.nav-link i { font-size: 20px; margin-bottom: 4px; transition: all 0.3s; }
+.nav-link.active { color: var(--gold-accent); }
+.nav-link.active i { transform: translateY(-4px); text-shadow: 0 0 15px var(--gold-accent); }
+.nav-link.active::after {
+    content: ''; position: absolute; bottom: -10px; width: 6px; height: 6px;
+    background: var(--gold-accent); border-radius: 50%; box-shadow: 0 0 10px var(--gold-accent);
+}
+/* Центральная кнопка */
+.centered-link { transform: translateY(-20px); }
+.center-icon-bg {
+    width: 60px; height: 60px; background: linear-gradient(135deg, var(--gold-start), var(--gold-accent));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4); border: 4px solid var(--bg-deep);
+}
+.centered-link i { color: #0a0e1a; font-size: 24px; margin: 0; }
