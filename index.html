@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Кино-Карьера</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="app-container">
+
+        <section id="tab-main" class="tab-content active">
+            <header class="main-header">
+                <div class="user-info-header">
+                    <img src="https://via.placeholder.com/50" alt="Avatar" id="header-avatar" class="avatar-small">
+                    <div>
+                        <h2 id="header-username">Загрузка...</h2>
+                        <span class="season-badge">Сезон 2026: Активен 🔥</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="card league-card centered">
+                <div class="league-icon-large" id="current-league-icon">🎬</div>
+                <h1 class="league-title" id="current-league-name">Киноман</h1>
+                <p class="points-display"><span id="current-points">145</span> баллов</p>
+                
+                <div class="progress-container">
+                    <div class="progress-labels">
+                        <span>Текущий уровень</span>
+                        <span id="next-league-target">до Критика: 15 баллов</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="main-progress-fill" style="width: 72%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions-list">
+                <button class="action-btn primary-btn" onclick="openTab('tab-tasks')">
+                    <i class="fa-solid fa-star"></i> Как заработать баллы?
+                </button>
+                 <button class="action-btn secondary-btn" onclick="Telegram.WebApp.openLink('https://t.me/kinoitochca')">
+                    <i class="fa-solid fa-comments"></i> Комментировать в канале (+1 б.)
+                </button>
+            </div>
+        </section>
+
+        <section id="tab-leaderboard" class="tab-content">
+            <header class="section-header">
+                <h2>🏆 Рейтинг Сезона</h2>
+                <p>ТОП-10 лучших участников</p>
+            </header>
+
+            <div class="card my-rank-card">
+                <div class="rank-position">#<span id="my-rank">42</span></div>
+                <div class="rank-info">
+                    <h3>Моя позиция</h3>
+                    <p>До следующего места: <span class="highlight">+<span id="points-gap">12</span> б.</span></p>
+                </div>
+            </div>
+
+            <div class="leaderboard-list" id="leaderboard-container">
+                <div class="loading-placeholder">Загрузка рейтинга...</div>
+            </div>
+             <p class="hint-text text-center mt-2">Условие участия в ТОП: минимум 1 покупка Premium за сезон.</p>
+        </section>
+
+        <section id="tab-rewards" class="tab-content">
+             <header class="section-header">
+                <h2>💎 Лиги и Награды</h2>
+                <p>Награда выдается при переходе в лигу.</p>
+            </header>
+
+            <div class="rewards-list">
+                <div class="card reward-card locked">
+                    <div class="reward-icon">👀</div>
+                    <div class="reward-info">
+                        <h3>1. Зритель <span class="points-req">0 б.</span></h3>
+                        <p>Начало пути.</p>
+                    </div>
+                </div>
+                <div class="card reward-card unlocked current">
+                    <div class="reward-icon bronze">🎬</div>
+                    <div class="reward-info">
+                        <h3>2. Киноман <span class="points-req">10 б.</span></h3>
+                        <ul>
+                            <li>✅ 7 дней Premium</li>
+                            <li>✅ Серебряная рамка</li>
+                        </ul>
+                    </div>
+                    <div class="status-badge">Текущая</div>
+                </div>
+                <div class="card reward-card next-league">
+                    <div class="reward-icon silver">✍️</div>
+                    <div class="reward-info">
+                        <h3>3. Критик <span class="points-req">25 б.</span></h3>
+                        <ul>
+                            <li>🔒 14 дней Premium</li>
+                            <li>🔒 Золотая рамка</li>
+                            <li>🔒 Приоритет к AI-чату</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card reward-card locked">
+                    <div class="reward-icon gold">💰</div>
+                    <div class="reward-info">
+                        <h3>4. Продюсер <span class="points-req">50 б.</span></h3>
+                        <ul>
+                            <li>🔒 1 месяц Premium</li>
+                            <li>🔒 Множитель баллов ×1.1</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card reward-card locked">
+                    <div class="reward-icon platinum">🎥</div>
+                    <div class="reward-info">
+                        <h3>5. Режиссёр <span class="points-req">90 б.</span></h3>
+                        <ul>
+                            <li>🔒 2 месяца Premium</li>
+                            <li>🔒 Особый значок</li>
+                            <li>🔒 Закрытое голосование</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card reward-card locked legendary">
+                    <div class="reward-icon diamond">👑</div>
+                    <div class="reward-info">
+                        <h3>6. Легенда <span class="points-req">150 б.</span></h3>
+                        <ul>
+                            <li>🔒 3 месяца Premium</li>
+                            <li>🔒 VIP статус навсегда</li>
+                            <li>🔒 Зал славы</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-profile" class="tab-content">
+             <header class="section-header">
+                <h2>👤 Мой Кабинет</h2>
+            </header>
+
+            <div class="card profile-main-card centered">
+                <div class="profile-avatar-frame frame-silver" id="profile-frame">
+                    <img src="https://via.placeholder.com/100" alt="Avatar" id="profile-avatar" class="avatar-large">
+                </div>
+                <h2 id="profile-fullname">Имя Фамилия</h2>
+                <p class="username" id="profile-username">@username</p>
+                 <span class="league-badge" id="profile-league-badge">🎬 Киноман</span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fa-solid fa-coins stat-icon gold"></i>
+                    <span class="stat-value" id="stat-points">145</span>
+                    <span class="stat-label">Баллов</span>
+                </div>
+                 <div class="stat-card">
+                    <i class="fa-solid fa-users stat-icon blue"></i>
+                    <span class="stat-value" id="stat-invites">12</span>
+                    <span class="stat-label">Приглашено</span>
+                </div>
+                 <div class="stat-card">
+                    <i class="fa-solid fa-gem stat-icon purple"></i>
+                    <span class="stat-value" id="stat-premium">2</span>
+                    <span class="stat-label">Покупок Prem</span>
+                </div>
+            </div>
+
+            <div class="card referral-card">
+                <h3>🔗 Твоя реферальная ссылка</h3>
+                <p>Делись с друзьями и получай баллы!</p>
+                <div class="referral-link-container">
+                    <input type="text" id="ref-link-input" readonly value="Загрузка ссылки...">
+                    <button class="copy-btn" id="copy-ref-btn">
+                        <i class="fa-solid fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+         <section id="tab-tasks" class="tab-content">
+            <header class="section-header">
+               <button class="back-btn" onclick="openTab('tab-main')"><i class="fa-solid fa-arrow-left"></i> Назад</button>
+               <h2>🎯 Как заработать баллы</h2>
+           </header>
+           <div class="tasks-list">
+               <div class="card task-card">
+                   <div class="task-icon">📅</div>
+                   <div class="task-info">
+                       <h4>Активность 7 дней подряд</h4>
+                       <p>Заходи в бота каждый день.</p>
+                   </div>
+                   <div class="task-reward">+2 б.</div>
+               </div>
+               <div class="card task-card">
+                   <div class="task-icon">💬</div>
+                   <div class="task-info">
+                       <h4>Комментарий в канале</h4>
+                       <p>Макс. 1 в сутки, от 20 символов.</p>
+                   </div>
+                   <div class="task-reward">+1 б.</div>
+               </div>
+                <div class="card task-card">
+                   <div class="task-icon">⭐</div>
+                   <div class="task-info">
+                       <h4>Оценка фильма</h4>
+                       <p>5 оценок уникальных фильмов.</p>
+                   </div>
+                   <div class="task-reward">+2 б.</div>
+               </div>
+               <div class="card task-card highlight-task">
+                   <div class="task-icon">👥</div>
+                   <div class="task-info">
+                       <h4>Пригласить друга</h4>
+                       <p>Друг должен быть активен 7 дней.</p>
+                   </div>
+                   <div class="task-reward">+2 б.</div>
+               </div>
+               <div class="card task-card highlight-task premium-task">
+                   <div class="task-icon">💎</div>
+                   <div class="task-info">
+                       <h4>Купить Premium</h4>
+                       <p>Самый быстрый рост. Раз в 30 дней.</p>
+                   </div>
+                   <div class="task-reward">+5 б.</div>
+               </div>
+               <div class="card task-card highlight-task premium-task">
+                <div class="task-icon">👥💎</div>
+                <div class="task-info">
+                    <h4>Реферал купил Premium</h4>
+                    <p>Без лимитов!</p>
+                </div>
+                <div class="task-reward">+5 б.</div>
+            </div>
+           </div>
+       </section>
+
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" data-target="tab-main">
+            <i class="fa-solid fa-house"></i>
+            <span>Главная</span>
+        </a>
+        <a href="#" class="nav-item" data-target="tab-leaderboard">
+            <i class="fa-solid fa-trophy"></i>
+            <span>Рейтинг</span>
+        </a>
+        <a href="#" class="nav-item" data-target="tab-rewards">
+            <i class="fa-solid fa-gift"></i>
+            <span>Награды</span>
+        </a>
+        <a href="#" class="nav-item" data-target="tab-profile">
+            <i class="fa-solid fa-user"></i>
+            <span>Профиль</span>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
