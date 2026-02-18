@@ -1,0 +1,269 @@
+/* Основные переменные и сброс стилей */
+:root {
+    /* Цвета из темы Telegram (будут меняться автоматически) */
+    --tg-theme-bg-color: #17212b;
+    --tg-theme-text-color: #ffffff;
+    --tg-theme-hint-color: #7d8b99;
+    --tg-theme-link-color: #6ab3f3;
+    --tg-theme-button-color: #5288c1;
+    --tg-theme-button-text-color: #ffffff;
+    --tg-theme-secondary-bg-color: #232e3c;
+
+    /* Кастомные цвета для Кино-Карьеры */
+    --accent-gold: #ffd700;
+    --accent-silver: #c0c0c0;
+    --accent-bronze: #cd7f32;
+    --accent-blue: #4a90e2;
+    --accent-purple: #9b59b6;
+    --card-bg: var(--tg-theme-secondary-bg-color);
+    --bg-color: var(--tg-theme-bg-color);
+    --text-primary: var(--tg-theme-text-color);
+    --text-secondary: var(--tg-theme-hint-color);
+
+    /* Размеры */
+    --nav-height: 60px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-size: 14px;
+    padding-bottom: var(--nav-height); /* Место для нижней навигации */
+    overflow-x: hidden;
+}
+
+/* Утилиты */
+.app-container {
+    padding: 16px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.centered { text-align: center; }
+.mt-2 { margin-top: 8px; }
+.text-center { text-align: center; }
+.highlight { color: var(--accent-gold); font-weight: bold; }
+
+/* Карточки */
+.card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Заголовки */
+.section-header {
+    margin-bottom: 16px;
+}
+.section-header h2 { font-size: 20px; margin-bottom: 4px; }
+.section-header p { color: var(--text-secondary); }
+.main-header {
+    margin-bottom: 20px;
+}
+
+/* Аватары */
+.avatar-small { width: 40px; height: 40px; border-radius: 50%; margin-right: 12px; }
+.avatar-large { width: 80px; height: 80px; border-radius: 50%; }
+.user-info-header { display: flex; align-items: center; }
+.season-badge { 
+    font-size: 12px; 
+    background: rgba(255, 215, 0, 0.15); 
+    color: var(--accent-gold); 
+    padding: 2px 8px; 
+    border-radius: 10px;
+}
+
+/* Вкладки (Tabs) */
+.tab-content {
+    display: none; /* Скрываем все вкладки по умолчанию */
+    animation: fadeIn 0.3s ease;
+}
+.tab-content.active {
+    display: block; /* Показываем только активную */
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* === ГЛАВНАЯ === */
+.league-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, #2c3e50 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.league-icon-large { font-size: 48px; margin-bottom: 8px; }
+.league-title { font-size: 24px; margin-bottom: 4px; }
+.points-display { font-size: 18px; color: var(--text-secondary); margin-bottom: 16px; }
+.points-display span { font-size: 28px; font-weight: bold; color: var(--accent-gold); }
+
+/* Прогресс бар */
+.progress-container { margin-top: 12px; }
+.progress-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+.progress-bar {
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-bronze));
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+/* Кнопки действий */
+.actions-list { display: flex; flex-direction: column; gap: 10px; }
+.action-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.1s;
+}
+.action-btn:active { transform: scale(0.98); }
+.primary-btn { background-color: var(--tg-theme-button-color); color: var(--tg-theme-button-text-color); }
+.secondary-btn { background-color: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+
+/* === РЕЙТИНГ === */
+.my-rank-card {
+    display: flex;
+    align-items: center;
+    background: rgba(82, 136, 193, 0.15); /* Подсветка текущего юзера */
+    border: 1px solid var(--tg-theme-button-color);
+}
+.rank-position {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 16px;
+    color: var(--tg-theme-button-color);
+}
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.leaderboard-item:last-child { border-bottom: none; }
+.lb-rank { width: 30px; font-weight: bold; text-align: center; }
+.lb-avatar { margin-right: 12px; }
+.lb-info { flex-grow: 1; }
+.lb-name { font-weight: 600; }
+.lb-league { font-size: 11px; color: var(--text-secondary); }
+.lb-points { font-weight: bold; color: var(--accent-gold); }
+.top-3 { color: var(--accent-gold); }
+
+/* === НАГРАДЫ === */
+.reward-card { display: flex; align-items: flex-start; gap: 12px; position: relative; }
+.reward-icon { font-size: 24px; min-width: 32px; text-align: center; }
+.reward-info h3 { margin-bottom: 6px; font-size: 16px; }
+.points-req { font-size: 12px; color: var(--text-secondary); font-weight: normal; margin-left: 8px; }
+.reward-info ul { list-style: none; }
+.reward-info li { font-size: 12px; margin-bottom: 4px; color: var(--text-secondary); }
+.locked { opacity: 0.6; filter: grayscale(0.8); }
+.locked h3::before { content: '🔒 '; }
+.current { border: 2px solid var(--accent-gold); background: rgba(255, 215, 0, 0.05); }
+.next-league { border: 1px dashed var(--accent-silver); }
+.status-badge {
+    position: absolute; top: 10px; right: 10px; font-size: 10px;
+    background: var(--accent-gold); color: #000; padding: 2px 6px; border-radius: 4px;
+}
+/* Цвета иконок лиг */
+.bronze { color: var(--accent-bronze); }
+.silver { color: var(--accent-silver); }
+.gold { color: var(--accent-gold); }
+.platinum { color: #e5e4e2; text-shadow: 0 0 10px rgba(229, 228, 226, 0.5); }
+.diamond { color: var(--accent-blue); text-shadow: 0 0 10px rgba(74, 144, 226, 0.5); }
+.legendary .reward-icon { animation: pulse 2s infinite; }
+
+/* === ПРОФИЛЬ === */
+.profile-avatar-frame {
+    display: inline-block;
+    padding: 4px;
+    border-radius: 50%;
+    margin-bottom: 12px;
+}
+/* Рамки для профиля */
+.frame-silver { background: linear-gradient(45deg, #999 0%, #eee 50%, #999 100%); }
+.frame-gold { background: linear-gradient(45deg, #bf953f 0%, #fcf6ba 50%, #bf953f 100%); box-shadow: 0 0 15px rgba(191, 149, 63, 0.5); }
+
+.profile-main-card h2 { margin-bottom: 0; }
+.username { color: var(--text-secondary); margin-bottom: 8px; }
+.league-badge { background: var(--tg-theme-button-color); color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 12px; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+.stat-card { background: var(--card-bg); padding: 12px; border-radius: 12px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.stat-icon { font-size: 20px; margin-bottom: 4px; }
+.stat-value { font-size: 18px; font-weight: bold; }
+.stat-label { font-size: 11px; color: var(--text-secondary); }
+.stat-icon.gold { color: var(--accent-gold); }
+.stat-icon.blue { color: var(--accent-blue); }
+.stat-icon.purple { color: var(--accent-purple); }
+
+.referral-link-container { display: flex; gap: 8px; margin-top: 12px; }
+#ref-link-input {
+    flex-grow: 1;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-family: monospace;
+}
+.copy-btn {
+    background: var(--tg-theme-button-color); color: #fff; border: none;
+    padding: 0 16px; border-radius: 8px; cursor: pointer;
+}
+
+/* === ЗАДАНИЯ (Tasks) === */
+.back-btn { background: none; border: none; color: var(--text-primary); font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 16px;}
+.task-card { display: flex; align-items: center; gap: 12px; }
+.task-icon { font-size: 24px; width: 30px; text-align: center; }
+.task-info h4 { margin-bottom: 2px; }
+.task-info p { font-size: 12px; color: var(--text-secondary); }
+.task-reward { font-weight: bold; color: var(--accent-gold); margin-left: auto; background: rgba(255, 215, 0, 0.1); padding: 4px 8px; border-radius: 6px;}
+.highlight-task { border-left: 3px solid var(--accent-blue); }
+.premium-task { border-left: 3px solid var(--accent-gold); background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, var(--card-bg) 100%); }
+
+/* === НИЖНЯЯ НАВИГАЦИЯ === */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    background-color: var(--tg-theme-secondary-bg-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--tg-theme-hint-color);
+    font-size: 11px;
+    transition: color 0.2s;
+}
+.nav-item i { font-size: 20px; margin-bottom: 4px; }
+.nav-item.active { color: var(--tg-theme-button-color); }
+
+/* Анимация пульсации для легенды */
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); filter: brightness(1.2); } 100% { transform: scale(1); } }
