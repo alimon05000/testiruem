@@ -1,0 +1,141 @@
+/* ========== ПЕРЕМЕННЫЕ ЖИДКОГО СТЕКЛА (Адаптировано под темную тему) ========== */
+:root {
+    /* Полупрозрачный темный фон для стекла */
+    --lg-bg-color: rgba(15, 15, 15, 0.3);
+    /* Красные и белые блики на гранях стекла */
+    --lg-highlight: rgba(230, 57, 70, 0.4); 
+    --lg-highlight-white: rgba(255, 255, 255, 0.1);
+    --lg-text: #ffffff;
+    --lg-hover-glow: rgba(230, 57, 70, 0.2);
+    
+    --clr-accent-red: #e63946; 
+    --clr-text-white: #ffffff;
+    --clr-text-muted: rgba(255, 255, 255, 0.5);
+    --font-main: 'Montserrat', sans-serif;
+    --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ========== АНИМИРОВАННЫЙ ФОН ========== 
+   Без переливающегося фона прозрачное стекло не будет видно. */
+body {
+    font-family: var(--font-main);
+    color: var(--lg-text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* Глубокий темный градиент с красными оттенками */
+    background: linear-gradient(-45deg, #0a0a0a, #1a080a, #0d0d0d, #240b10);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite alternate;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Эффект Неона */
+.neon-text {
+    color: var(--clr-accent-red); font-weight: 800; text-transform: uppercase;
+    text-shadow: 0 0 5px rgba(230, 57, 70, 0.4), 0 0 15px rgba(230, 57, 70, 0.2);
+}
+
+/* ========== БАЗОВЫЙ ЛЕЙАУТ (Шапка, Сайдбар) ========== */
+.mobile-header { display: none; }
+.sidebar {
+    position: fixed; top: 0; left: 0; height: 100vh; width: 250px;
+    background: rgba(5, 5, 5, 0.6); backdrop-filter: blur(15px);
+    border-right: 1px solid rgba(255, 255, 255, 0.05); z-index: 100;
+}
+.logo-container { padding: 30px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.logo-text { font-size: 1.2rem; }
+.sidebar-nav { margin-top: 40px; display: flex; flex-direction: column; }
+.nav-link { display: flex; align-items: center; padding: 15px 25px; color: var(--clr-text-muted); text-decoration: none; transition: 0.3s; }
+.nav-link.active, .nav-link:hover { color: white; background: rgba(230,57,70,0.1); border-left: 3px solid var(--clr-accent-red); }
+.nav-link .icon { font-size: 1.4rem; margin-right: 15px; }
+
+.main-content { margin-left: 250px; padding: 0 5% 100px 5%; }
+.top-header { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+.search-bar { position: relative; width: 100%; max-width: 400px; display: flex; align-items: center; }
+.search-icon { position: absolute; left: 15px; color: var(--clr-text-muted); font-size: 1.2rem; }
+.search-bar input { width: 100%; padding: 12px 20px 12px 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; color: white; font-family: var(--font-main); }
+.icon-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; width: 45px; height: 45px; color: white; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+
+/* ========== ЛЕВАЯ КОЛОНКА ПРОФИЛЯ ========== */
+.profile-container { display: grid; grid-template-columns: 280px 1fr; gap: 40px; }
+.profile-sidebar {
+    background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 30px 0;
+}
+.profile-user-info { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 20px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.profile-avatar { width: 80px; height: 80px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; color: var(--clr-text-muted); margin-bottom: 15px; }
+.profile-name h3 { font-size: 1.2rem; margin-bottom: 5px; }
+.status-badge { display: inline-flex; align-items: center; gap: 5px; color: var(--clr-accent-red); font-size: 0.7rem; text-transform: uppercase; font-weight: 800; }
+.profile-menu-btn { width: 100%; background: transparent; border: none; color: var(--clr-text-muted); padding: 15px 30px; text-align: left; font-size: 0.95rem; font-family: var(--font-main); cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 15px; border-left: 3px solid transparent; }
+.profile-menu-btn.active { color: white; border-left-color: var(--clr-accent-red); background: rgba(255,255,255,0.02); }
+
+/* ========== СТРУКТУРА ЖИДКОГО СТЕКЛА (Твои стили) ========== */
+.glass-container {
+    position: relative; display: flex; font-weight: 500; color: var(--lg-text);
+    background: transparent; border-radius: 1rem; overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: var(--transition-smooth);
+}
+.glass-container:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(230, 57, 70, 0.15); }
+
+/* 1. Искажение (Blur + SVG Filter) */
+.glass-filter {
+    position: absolute; inset: 0; z-index: 0;
+    backdrop-filter: blur(12px); /* Размытие фона */
+    /* Искажение работает только если в HTML есть нужный <svg> */
+    filter: url(#lg-dist); 
+    isolation: isolate;
+}
+
+/* 2. Цвет заливки стекла */
+.glass-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: var(--lg-bg-color);
+}
+
+/* 3. Блики по краям (Specular) */
+.glass-specular {
+    position: absolute; inset: 0; z-index: 2; border-radius: inherit; overflow: hidden;
+    /* Верхний левый край белый, нижний правый - красный для стиля */
+    box-shadow: 
+        inset 1px 1px 1px var(--lg-highlight-white),
+        inset -1px -1px 2px var(--lg-highlight);
+}
+
+/* 4. Сам контент */
+.glass-content {
+    position: relative; z-index: 3; padding: 30px; width: 100%;
+}
+
+.glass-content-flex { display: flex; justify-content: space-between; align-items: center; }
+
+/* ========== ВНУТРЕННОСТИ СТЕКЛЯННЫХ КАРТОЧЕК ========== */
+.loyalty-info h4 { font-size: 1.4rem; font-weight: 500; margin-bottom: 10px; }
+.loyalty-info p { color: rgba(255,255,255,0.7); font-size: 0.85rem; max-width: 300px; line-height: 1.5; }
+.loyalty-points { display: flex; align-items: center; gap: 15px; text-align: right; }
+.loyalty-points i { font-size: 3rem; color: #ffc107; text-shadow: 0 0 15px rgba(255,193,7,0.3); }
+.points-amount { display: block; font-size: 2rem; font-weight: 800; line-height: 1; }
+.points-label { font-size: 0.8rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
+
+.profile-block-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+.profile-block-header h3 { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
+.view-all { color: var(--clr-text-muted); text-decoration: none; font-size: 0.9rem; }
+
+.order-card-glass { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; transition: 0.3s; }
+.order-card-glass:hover { background: rgba(255,255,255,0.05); }
+.order-header { display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.order-number span:first-child { display: block; font-weight: 600; margin-bottom: 5px; }
+.order-date { font-size: 0.8rem; color: var(--clr-text-muted); }
+.status-pill { background: rgba(255,193,7,0.2); color: #ffc107; padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; height: fit-content; }
+.order-body { display: flex; justify-content: space-between; align-items: flex-end; }
+.order-sum-label { display: block; font-size: 0.8rem; color: var(--clr-text-muted); margin-bottom: 5px; }
+.order-sum-value { font-size: 1.4rem; font-weight: 800; }
+.btn-solid { background: var(--clr-accent-red); border: none; color: white; padding: 10px 20px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; font-weight: 600; font-family: var(--font-main); transition: 0.3s; }
+.btn-solid:hover { box-shadow: 0 0 15px rgba(230, 57, 70, 0.5); }
