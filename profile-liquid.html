@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Жидкое стекло | Профиль</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="profile-liquid.css">
+</head>
+<body>
+
+    <svg style="width:0; height:0; position:absolute;" aria-hidden="true" focusable="false">
+        <filter id="lg-dist">
+            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="warp" />
+            <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="15" in="SourceGraphic" in2="warp" />
+        </filter>
+    </svg>
+
+    <header class="mobile-header">
+        <button class="menu-toggle" id="menuToggle"><i class="ph ph-list"></i></button>
+        <div class="mobile-logo-text neon-text">Дом Текстиля</div>
+        <button class="icon-btn"><i class="ph ph-shopping-cart"></i></button>
+    </header>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <h1 class="logo-text neon-text" style="opacity: 1;">Дом Текстиля</h1>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-link"><i class="ph ph-squares-four icon"></i><span class="link-text">Каталог</span></a>
+            <a href="#" class="nav-link"><i class="ph ph-sparkle icon"></i><span class="link-text">Коллекции</span></a>
+            <a href="#" class="nav-link active"><i class="ph ph-user icon"></i><span class="link-text">Профиль</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="search-bar">
+                <i class="ph ph-magnifying-glass search-icon"></i>
+                <input type="text" placeholder="Поиск по товарам...">
+            </div>
+            <div class="user-actions">
+                <button class="icon-btn profile-desk-btn"><i class="ph ph-house"></i></button>
+            </div>
+        </header>
+
+        <h1 class="page-title neon-text" style="margin: 30px 0;">Личный кабинет</h1>
+
+        <section class="profile-container">
+            <div class="profile-sidebar">
+                <div class="profile-user-info">
+                    <div class="profile-avatar"><i class="ph ph-user"></i></div>
+                    <div class="profile-name">
+                        <h3>Алим</h3>
+                        <span class="status-badge"><i class="ph ph-crown"></i> Premium Client</span>
+                    </div>
+                </div>
+                <nav class="profile-menu">
+                    <button class="profile-menu-btn active"><i class="ph ph-squares-four"></i> Сводка</button>
+                    <button class="profile-menu-btn"><i class="ph ph-package"></i> Мои заказы</button>
+                    <button class="profile-menu-btn"><i class="ph ph-heart"></i> Избранное</button>
+                    <button class="profile-menu-btn"><i class="ph ph-gear"></i> Настройки</button>
+                </nav>
+            </div>
+
+            <div class="profile-content">
+                
+                <div class="glass-container glass-card-loyalty">
+                    <div class="glass-filter"></div>
+                    <div class="glass-overlay"></div>
+                    <div class="glass-specular"></div>
+                    <div class="glass-content glass-content-flex">
+                        <div class="loyalty-info">
+                            <h4>Ваша скидка: <span class="neon-text">10%</span></h4>
+                            <p>До следующего уровня (15%) осталось 15 000 ₽</p>
+                        </div>
+                        <div class="loyalty-points">
+                            <i class="ph ph-coins"></i>
+                            <div>
+                                <span class="points-amount">2 450</span>
+                                <span class="points-label">бонусных баллов</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-container glass-card-block" style="margin-top: 30px;">
+                    <div class="glass-filter"></div>
+                    <div class="glass-overlay"></div>
+                    <div class="glass-specular"></div>
+                    <div class="glass-content" style="flex-direction: column; width: 100%;">
+                        
+                        <div class="profile-block-header">
+                            <h3>Последние заказы</h3>
+                            <a href="#" class="view-all">Все <i class="ph ph-caret-right"></i></a>
+                        </div>
+                        
+                        <div class="orders-list">
+                            <div class="order-card-glass">
+                                <div class="order-header">
+                                    <div class="order-number">
+                                        <span>Заказ № 10045</span>
+                                        <span class="order-date">24 февраля 2026</span>
+                                    </div>
+                                    <span class="status-pill status-process">В пути</span>
+                                </div>
+                                <div class="order-body">
+                                    <div class="order-total-info">
+                                        <span class="order-sum-label">Сумма заказа:</span>
+                                        <span class="order-sum-value">20 900 ₽</span>
+                                    </div>
+                                    <button class="btn-solid">Отследить</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
