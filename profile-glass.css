@@ -1,21 +1,25 @@
 :root {
-    /* Базовые цвета магазина */
+    /* Базовые цвета магазина - СТРОГО ИЗ ОФИЦИАЛЬНОГО ДИЗАЙНА */
+    --clr-bg-main: #0a0a0a; /* Матовый черный */
+    --clr-bg-sidebar: #050505; /* Чуть темнее */
+    --clr-bg-card: #121212; /* Цвет карточек */
     --clr-accent-red: #e63946; 
     --clr-text-white: #ffffff;
-    --clr-text-muted: rgba(255, 255, 255, 0.6);
+    --clr-text-muted: rgba(255, 255, 255, 0.5);
     --font-main: 'Montserrat', sans-serif;
     --transition: all 0.3s ease;
 
-    /* ПЕРЕМЕННЫЕ СТЕКЛА (Из твоего примера, адаптированные под темную тему) */
+    /* ПЕРЕМЕННЫЕ СТЕКЛА (Адаптированные под официальный дизайн) */
     --c-glass: #bbbbbc;
-    --c-light: #ffffff;
+    /* ЧИСТЫЕ БЕЛЫЕ БЛИКИ, НИКАКОГО КРАСНОГО */
+    --c-light: #ffffff; 
     --c-dark: #000000;
     --c-content: rgba(255, 255, 255, 0.92);
-    --c-action: #e63946; /* Красный акцент */
+    --c-action: #e63946;
     
-    /* Интенсивность бликов на гранях */
-    --glass-reflex-dark: 2;
-    --glass-reflex-light: 0.35; 
+    /* Тонкие блики для премиальности */
+    --glass-reflex-dark: 1.5;
+    --glass-reflex-light: 0.25; 
     --saturation: 150%;
 }
 
@@ -26,38 +30,38 @@ body {
     color: var(--clr-text-white);
     min-height: 100vh;
     overflow-x: hidden;
-    background: #111111; /* Резервный фон */
+    background: var(--clr-bg-main); /* ЧИСТЫЙ ЧЕРНЫЙ ФОН */
 }
 
-/* ========== СТАТИЧНЫЙ ФОН (Из твоего примера) ========== */
+/* ========== СТАТИЧНЫЙ ФОН ИЗ ОФИЦИАЛЬНОГО ДИЗАЙНА ========== */
 .parallax-bg {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-    /* Я добавил красные и темные радиальные градиенты для соответствия нашему стилю */
+    /* УБРАЛИ КРАСНЫЕ ГРАДИЕНТЫ */
     background: 
-        radial-gradient(circle at 20% 30%, rgba(230, 57, 70, 0.15) 0%, rgba(230, 57, 70, 0.05) 40%, rgba(0, 0, 0, 0) 70%), 
-        radial-gradient(circle at 80% 70%, rgba(200, 200, 255, 0.03) 0%, rgba(120, 80, 200, 0.01) 30%, rgba(0, 0, 0, 0) 60%), 
-        #0a0a0a;
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 40%, rgba(0, 0, 0, 0) 70%), 
+        radial-gradient(circle at 80% 70%, rgba(200, 200, 255, 0.02) 0%, rgba(120, 80, 200, 0.01) 30%, rgba(0, 0, 0, 0) 60%), 
+        var(--clr-bg-main);
     background-attachment: fixed;
     pointer-events: none;
 }
 
 /* ========== УНИВЕРСАЛЬНЫЕ КЛАССЫ СТЕКЛА ========== */
 
-/* 1. Крупные панели (Сайдбар, Блоки контента) */
+/* 1. Крупные панели */
 .glass-panel {
     border-radius: 20px;
     background-color: color-mix(in srgb, var(--c-glass) 6%, transparent);
     backdrop-filter: blur(15px) saturate(var(--saturation));
     -webkit-backdrop-filter: blur(15px) saturate(var(--saturation));
-    /* Сложная многослойная тень для бликов по краям */
+    /* Тонкие белые блики на гранях */
     box-shadow: 
         inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 15%), transparent),
-        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent), 
-        inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 40%), transparent),
+        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent), 
+        inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 30%), transparent),
         0 15px 35px rgba(0,0,0,0.5);
 }
 
-/* 2. Мелкие элементы (Кнопки, Инпуты, Карточки внутри блоков) */
+/* 2. Мелкие элементы */
 .glass-element {
     border-radius: 12px;
     background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
@@ -65,7 +69,7 @@ body {
     -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
     box-shadow: 
         inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent), 
-        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent);
+        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 70%), transparent);
 }
 
 /* ========== БАЗОВЫЕ ЭЛЕМЕНТЫ ========== */
@@ -114,7 +118,6 @@ body {
 .search-icon { position: absolute; left: 15px; color: var(--clr-text-muted); font-size: 1.2rem; }
 .search-bar input { 
     width: 100%; padding: 12px 20px 12px 45px; color: white; font-family: var(--font-main); border: none; outline: none;
-    /* Инпут тоже стекло */
     border-radius: 30px; background-color: color-mix(in srgb, var(--c-glass) 8%, transparent);
     backdrop-filter: blur(8px) saturate(var(--saturation));
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent);
@@ -137,8 +140,8 @@ body {
     background-color: color-mix(in srgb, var(--clr-accent-red) 20%, transparent);
 }
 
-/* Карточка лояльности */
-.loyalty-card { padding: 30px; display: flex; justify-content: space-between; align-items: center; }
+/* Карточка лояльности - УБРАЛИ КРАСНЫЙ ГРАДИЕНТ */
+.loyalty-card { padding: 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2) !important;}
 .loyalty-info h4 { font-size: 1.4rem; font-weight: 500; margin-bottom: 10px; }
 .loyalty-info p { color: var(--clr-text-muted); font-size: 0.85rem; max-width: 300px; line-height: 1.5; }
 .loyalty-points { display: flex; align-items: center; gap: 15px; text-align: right; }
